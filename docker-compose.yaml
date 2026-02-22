@@ -1,12 +1,24 @@
 services:
   ollama:
     volumes:
-      - ollama:/root/.ollama
+      - ${OLLAMA_DATA_DIR-./.localdata/ollama}:/root/.ollama
     container_name: ollama
     pull_policy: always
     tty: true
     restart: unless-stopped
     image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
+
+  comfyui:
+    image: yanwk/comfyui-boot:cpu
+    container_name: comfyui
+    ports:
+      - ${COMFYUI_PORT-8188}:8188
+    volumes:
+      - ${COMFYUI_ROOT_DIR-./.localdata/comfyui/root}:/root
+      - ${COMFYUI_MODELS_DIR-./.localdata/comfyui/models}:/root/ComfyUI/models
+      - ${COMFYUI_INPUT_DIR-./.localdata/comfyui/input}:/root/ComfyUI/input
+      - ${COMFYUI_OUTPUT_DIR-./.localdata/comfyui/output}:/root/ComfyUI/output
+    restart: unless-stopped
 
   open-webui:
     build:
@@ -15,18 +27,29 @@ services:
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
     volumes:
-      - open-webui:/app/backend/data
+      - ${OPEN_WEBUI_DATA_DIR-./.localdata/open-webui}:/app/backend/data
+      - ./custom-favicon/favicon.png:/app/backend/open_webui/static/favicon.png:ro
+      - ./custom-favicon/favicon-dark.png:/app/backend/open_webui/static/favicon-dark.png:ro
+      - ./custom-favicon/favicon-96x96.png:/app/backend/open_webui/static/favicon-96x96.png:ro
+      - ./custom-favicon/favicon.ico:/app/backend/open_webui/static/favicon.ico:ro
+      - ./custom-favicon/apple-touch-icon.png:/app/backend/open_webui/static/apple-touch-icon.png:ro
+      - ./custom-favicon/web-app-manifest-192x192.png:/app/backend/open_webui/static/web-app-manifest-192x192.png:ro
+      - ./custom-favicon/web-app-manifest-512x512.png:/app/backend/open_webui/static/web-app-manifest-512x512.png:ro
     depends_on:
       - ollama
+      - comfyui
     ports:
       - ${OPEN_WEBUI_PORT-3000}:8080
     environment:
       - 'OLLAMA_BASE_URL=http://ollama:11434'
-      - 'WEBUI_SECRET_KEY='
+      - 'WEBUI_URL=${WEBUI_URL-http://localhost:3000}'
+      - 'WEBUI_AUTH=${WEBUI_AUTH-True}'
+      - 'ENABLE_IMAGE_GENERATION=${ENABLE_IMAGE_GENERATION-True}'
+      - 'IMAGE_GENERATION_ENGINE=${IMAGE_GENERATION_ENGINE-comfyui}'
+      - 'COMFYUI_BASE_URL=${COMFYUI_BASE_URL-http://comfyui:8188}'
+      - 'OPENAI_API_BASE_URL=${OPENAI_API_BASE_URL-}'
+      - 'OPENAI_API_KEY=${OPENAI_API_KEY-}'
+      - 'WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
-
-volumes:
-  ollama: {}
-  open-webui: {}
