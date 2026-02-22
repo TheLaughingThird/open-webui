@@ -210,6 +210,7 @@ Cons:
 Phase 2 prep doc (already added):
 
 - `docs/local/openwebui-gpu-override-runbook.md` (GPU override draft, prerequisites, smoke tests)
+- `docs/local/openwebui-benchmark-runbook.md` (CPU vs GPU measurement plan and scripts)
 
 ## Source References
 

@@ -32,6 +32,7 @@ This fork also includes local setup and planning notes for a Docker + `ddev` wor
 - `docs/local/openwebui-installation-blueprint.md`
 - `docs/local/openwebui-doc-research-2026-02-22.md`
 - `docs/local/openwebui-gpu-override-runbook.md`
+- `docs/local/openwebui-benchmark-runbook.md`
 
 ## Key Features of Open WebUI ⭐
 
