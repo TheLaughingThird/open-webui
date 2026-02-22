@@ -25,6 +25,13 @@ Passionate about open-source AI? [Join our team →](https://careers.openwebui.c
 
 For more information, be sure to check out our [Open WebUI Documentation](https://docs.openwebui.com/).
 
+## Fork Notes (Local Setup)
+
+This fork also includes local setup and planning notes for a Docker + `ddev` workflow:
+
+- `docs/local/openwebui-installation-blueprint.md`
+- `docs/local/openwebui-doc-research-2026-02-22.md`
+
 ## Key Features of Open WebUI ⭐
 
 - 🚀 **Effortless Setup**: Install seamlessly using Docker or Kubernetes (kubectl, kustomize or helm) for a hassle-free experience with support for both `:ollama` and `:cuda` tagged images.
