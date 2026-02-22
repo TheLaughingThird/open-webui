@@ -207,6 +207,10 @@ Cons:
 4. Add `docs/local/openwebui-update-runbook.md`
 5. Test one full backup -> update -> verify cycle
 
+Phase 2 prep doc (already added):
+
+- `docs/local/openwebui-gpu-override-runbook.md` (GPU override draft, prerequisites, smoke tests)
+
 ## Source References
 
 - Quick Start: <https://docs.openwebui.com/getting-started/quick-start/>
