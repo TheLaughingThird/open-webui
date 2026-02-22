@@ -91,6 +91,32 @@
 		}
 	];
 
+	const applyComfyUICreateWorkflowPreset = (preset: 'standard' | 'qwen') => {
+		const presetKeys: Record<string, string> =
+			preset === 'qwen'
+				? {
+						prompt: 'prompt',
+						model: 'ckpt_name',
+						width: 'width',
+						height: 'height',
+						steps: 'steps',
+						seed: 'seed'
+					}
+				: {
+						prompt: 'text',
+						model: 'ckpt_name',
+						width: 'width',
+						height: 'height',
+						steps: 'steps',
+						seed: 'seed'
+					};
+
+		REQUIRED_WORKFLOW_NODES = REQUIRED_WORKFLOW_NODES.map((node) => ({
+			...node,
+			key: presetKeys[node.type] ?? node.key
+		}));
+	};
+
 	const getModels = async () => {
 		models = await getImageGenerationModels(localStorage.token).catch((error) => {
 			toast.error(`${error}`);
@@ -772,6 +798,23 @@
 								</div>
 
 								<div class="mt-1 text-xs flex flex-col gap-1.5">
+									<div class="flex items-center gap-2 mb-1">
+										<div class="text-gray-400 dark:text-gray-500">Preset:</div>
+										<button
+											type="button"
+											class="px-2 py-0.5 rounded border border-gray-100/50 dark:border-gray-800 text-xs"
+											on:click={() => applyComfyUICreateWorkflowPreset('standard')}
+										>
+											Standard
+										</button>
+										<button
+											type="button"
+											class="px-2 py-0.5 rounded border border-gray-100/50 dark:border-gray-800 text-xs"
+											on:click={() => applyComfyUICreateWorkflowPreset('qwen')}
+										>
+											Qwen
+										</button>
+									</div>
 									{#each REQUIRED_WORKFLOW_NODES as node}
 										<div class="flex w-full flex-col">
 											<div class="shrink-0">
@@ -813,6 +856,9 @@
 
 								<div class="mt-1 text-xs text-gray-400 dark:text-gray-500">
 									{$i18n.t('*Prompt node ID(s) are required for image generation')}
+								</div>
+								<div class="mt-1 text-xs text-gray-400 dark:text-gray-500">
+									Qwen ComfyUI workflows usually use `prompt` (not `text`) for the prompt node key.
 								</div>
 							</div>
 						{/if}
