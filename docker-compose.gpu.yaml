@@ -1,11 +1,15 @@
 services:
   ollama:
-    # GPU support
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: ${OLLAMA_GPU_DRIVER-nvidia}
-              count: ${OLLAMA_GPU_COUNT-1}
-              capabilities:
-                - gpu
+    gpus: all
+
+  comfyui:
+    # Override the CPU image from the base compose with a GPU-capable variant.
+    # Pin this tag after validating it works on your host/toolkit setup.
+    image: ${COMFYUI_DOCKER_TAG-yanwk/comfyui-boot:cu124-megapak}
+    gpus: all
+
+  open-webui:
+    # Use a CUDA-tagged Open WebUI image in GPU mode. Pin to a specific version in .env after testing.
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-v0.6.27-cuda}
+    # Optional: enable only if you confirm Open WebUI container-side GPU workloads benefit.
+    gpus: ${OPEN_WEBUI_GPU-all}
