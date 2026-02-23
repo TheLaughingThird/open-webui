@@ -29,6 +29,7 @@ For more information, be sure to check out our [Open WebUI Documentation](https:
 
 This fork also includes local setup and planning notes for a Docker + `ddev` workflow:
 
+- `docs/local/README.md` (index for local fork workflow, GPU notes, and planned work)
 - `docs/local/openwebui-installation-blueprint.md`
 - `docs/local/openwebui-doc-research-2026-02-22.md`
 - `docs/local/openwebui-gpu-override-runbook.md`
