@@ -62,6 +62,7 @@ See detailed runbook:
 
 ### Related docs
 
+- `docs/local/openwebui-update-runbook.md`
 - `docs/local/openwebui-gpu-override-runbook.md`
 - `docs/local/openwebui-benchmark-runbook.md`
 - `docs/local/openwebui-installation-blueprint.md`
@@ -70,12 +71,18 @@ See detailed runbook:
 
 Use this section as a lightweight checklist for fork-specific work that should not live in upstream docs.
 
+Current local status:
+
+- March 8, 2026: the Docker Compose stack was recovered and brought back up successfully
+- current verified runtime: `open-webui` healthy on host port `3002`, plus running `ollama` and `comfyui`
+
 - [x] Fork sync workflow documented (`main` mirror + `my-local-tweaks`)
 - [x] GPU compose override added for local benchmarking
+- [x] Add a local update runbook and helper scripts
 - [ ] Validate GPU image tags on target host and pin exact versions in `.env`
 - [ ] Run CPU vs GPU benchmark comparison and record results in `.localdata/benchmarks/`
 - [ ] Decide whether `open-webui` container GPU access should stay enabled by default
-- [ ] Add a local smoke-test checklist after compose changes
+- [x] Add a local smoke-test checklist after compose changes
 - [ ] Document upgrade notes when upstream changes affect local overrides
 
 ## GitHub Issues vs Docs (Recommended)

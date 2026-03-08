@@ -5,6 +5,10 @@ else
     DOCKER_COMPOSE := docker compose
 endif
 
+backup-openwebui:
+	chmod +x scripts/ops/backup-openwebui.sh
+	@./scripts/ops/backup-openwebui.sh
+
 install:
 	$(DOCKER_COMPOSE) up -d
 
@@ -20,14 +24,14 @@ startAndBuild:
 stop:
 	$(DOCKER_COMPOSE) stop
 
-update:
-	# Calls the LLM update script
+update-ollama-models:
 	chmod +x update_ollama_models.sh
 	@./update_ollama_models.sh
-	@git pull
-	$(DOCKER_COMPOSE) down
-	# Make sure the ollama-webui container is stopped before rebuilding
-	@docker stop open-webui || true
-	$(DOCKER_COMPOSE) up --build -d
-	$(DOCKER_COMPOSE) start
 
+update:
+	chmod +x scripts/ops/update-openwebui.sh
+	@./scripts/ops/update-openwebui.sh
+
+update-gpu:
+	chmod +x scripts/ops/update-openwebui.sh
+	@./scripts/ops/update-openwebui.sh --gpu

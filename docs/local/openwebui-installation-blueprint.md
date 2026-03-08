@@ -203,8 +203,8 @@ Cons:
 
 1. Patch compose for persistent `WEBUI_SECRET_KEY` and pinned tags
 2. Add `docker-compose.gpu.yaml` override for RTX 4070 SUPER
-3. Add `scripts/ops/backup-openwebui.sh` and `scripts/ops/restore-openwebui.sh`
-4. Add `docs/local/openwebui-update-runbook.md`
+3. Add `scripts/ops/backup-openwebui.sh` and `scripts/ops/restore-openwebui.sh` [done]
+4. Add `docs/local/openwebui-update-runbook.md` [done]
 5. Test one full backup -> update -> verify cycle
 
 Phase 2 prep doc (already added):
