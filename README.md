@@ -7,6 +7,10 @@ Deze fork gebruik ik lokaal op:
 - Upstream mirror branch: `main`
 
 ### Docker stack starten
+Ik probeer op WSL dus make install en dat werkt niet dus moet specifieker uitgelegd worden hier.
+
+1. clone repo
+2. Wat nu welk commando ?? 
 
 Eerste keer of als de containers nog niet bestaan:
 
