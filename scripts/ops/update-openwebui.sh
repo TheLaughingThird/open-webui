@@ -8,6 +8,8 @@ BACKUP_SCRIPT="$SCRIPT_DIR/backup-openwebui.sh"
 
 DEFAULT_HEALTH_TIMEOUT=180
 DEFAULT_WEBUI_PORT=3000
+STOPPED_FOR_BACKUP=false
+REDEPLOY_ATTEMPTED=false
 
 usage() {
 	cat <<'EOF'
@@ -119,9 +121,6 @@ main() {
 	local compose_cmd=()
 	local compose_args=()
 	local open_webui_port=""
-	local stopped_for_backup=false
-	local redeploy_attempted=false
-
 	while [ $# -gt 0 ]; do
 		case "$1" in
 			--gpu)
@@ -210,7 +209,7 @@ main() {
 
 	restart_on_failure() {
 		local exit_code="$?"
-		if [ "$exit_code" -ne 0 ] && [ "$stopped_for_backup" = true ] && [ "$redeploy_attempted" = false ]; then
+		if [ "$exit_code" -ne 0 ] && [ "$STOPPED_FOR_BACKUP" = true ] && [ "$REDEPLOY_ATTEMPTED" = false ]; then
 			echo "Update failed before redeploy completed. Attempting to bring open-webui back up." >&2
 			"${compose_cmd[@]}" "${compose_args[@]}" up -d open-webui >/dev/null 2>&1 || true
 		fi
@@ -224,7 +223,7 @@ main() {
 	if [ "$skip_backup" = false ] && have_container && container_running; then
 		echo "Stopping open-webui for a cleaner backup..."
 		"${compose_cmd[@]}" "${compose_args[@]}" stop open-webui
-		stopped_for_backup=true
+		STOPPED_FOR_BACKUP=true
 	fi
 
 	if [ "$skip_backup" = false ]; then
@@ -243,7 +242,7 @@ main() {
 	fi
 
 	echo "Recreating the stack..."
-	redeploy_attempted=true
+	REDEPLOY_ATTEMPTED=true
 	if [ "$build_images" = true ]; then
 		"${compose_cmd[@]}" "${compose_args[@]}" up -d --build --remove-orphans
 	else

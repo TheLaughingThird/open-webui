@@ -24,6 +24,41 @@ git fetch upstream
 
 ## Daily/Regular Update Workflow
 
+Fast path from the repo root:
+
+```bash
+./update.sh
+```
+
+This now performs both:
+
+- git sync for the fork branches
+- local Docker deployment update
+
+If you have local uncommitted changes:
+
+```bash
+./update.sh --stash
+```
+
+If you only want to sync `main`:
+
+```bash
+./update.sh --main-only
+```
+
+If you only want git sync and do not want to redeploy:
+
+```bash
+./update.sh --no-deploy
+```
+
+If you want the runtime update with GPU override:
+
+```bash
+./update.sh --gpu
+```
+
 ### 1) Sync fork `main` with upstream
 
 ```bash

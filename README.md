@@ -1,3 +1,116 @@
+## Lokale Fork Instructies
+
+Deze fork gebruik ik lokaal op:
+
+- Project-URL: `http://openwebui.localhost:3002/`
+- Werkbranch voor eigen wijzigingen: `my-local-tweaks`
+- Upstream mirror branch: `main`
+
+### Docker stack starten
+
+Eerste keer of als de containers nog niet bestaan:
+
+```bash
+make install
+```
+
+Als de containers al bestaan maar alleen gestopt zijn:
+
+```bash
+make start
+```
+
+Als `open-webui` opnieuw gebouwd moet worden vanuit deze checkout:
+
+```bash
+make startAndBuild
+```
+
+Stack stoppen:
+
+```bash
+make stop
+```
+
+### Lokale deployment updaten
+
+Standaard update van de lokale Docker Compose stack:
+
+```bash
+make update
+```
+
+Met GPU override:
+
+```bash
+make update-gpu
+```
+
+Health check na update:
+
+```bash
+curl -fsS http://127.0.0.1:3002/health
+```
+
+### Fork updaten vanaf upstream
+
+Houd `main` schoon als mirror van upstream en doe eigen werk op `my-local-tweaks`.
+`./update.sh` doet nu standaard twee dingen achter elkaar:
+
+- git/fork sync met upstream
+- update van de lokale Docker deployment
+
+```bash
+./update.sh
+```
+
+Als je lokale wijzigingen nog niet gecommit zijn:
+
+```bash
+./update.sh --stash
+```
+
+Alleen `main` syncen zonder rebase van `my-local-tweaks`:
+
+```bash
+./update.sh --main-only
+```
+
+Git sync doen zonder de draaiende Docker stack te updaten:
+
+```bash
+./update.sh --no-deploy
+```
+
+Git sync + deployment update met GPU override:
+
+```bash
+./update.sh --gpu
+```
+
+### Wijzigingen committen en pushen
+
+Werk altijd op `my-local-tweaks`:
+
+```bash
+git switch my-local-tweaks
+git status
+git add README.md
+git commit -m "docs: update lokale README-instructies"
+git push origin my-local-tweaks
+```
+
+Let op:
+
+- `./update.sh` doet standaard git sync plus deployment update
+- `make update` gebruik je als je alleen de lokale Docker deployment wilt updaten
+
+Voor bredere lokale documentatie en runbooks:
+
+- `docs/local/README.md`
+- `docs/local/openwebui-update-runbook.md`
+- `docs/local/openwebui-fork-sync-workflow.md`
+
 # Open WebUI 👋
 
 ![GitHub stars](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
