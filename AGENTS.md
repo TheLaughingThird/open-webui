@@ -1,43 +1,28 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a full-stack project with a SvelteKit frontend and FastAPI backend.
-
-- `src/`: frontend app code (routes, UI components, utilities, i18n).
-- `backend/open_webui/`: Python API/server logic and backend utilities.
-- `cypress/`: end-to-end browser tests.
-- `test/`: backend test assets and fixtures.
-- `static/`: static files (images, fonts, PWA assets, themes).
-- `docs/`: contributor and security documentation.
+This fork combines a SvelteKit frontend with a FastAPI backend. Frontend code lives in `src/`, including routes, UI components, stores, and i18n assets. Backend application code lives in `backend/open_webui/`. End-to-end tests are in `cypress/`, backend fixtures and test assets are in `test/`, static files are in `static/`, and fork-specific runbooks live in `docs/local/`.
 
 ## Build, Test, and Development Commands
 Use Node 18-22 and Python 3.11-3.12.
 
-- `npm run dev`: starts frontend dev server (includes Pyodide prep).
-- `npm run build`: production frontend build via Vite.
-- `npm run preview`: preview built frontend.
-- `npm run lint`: runs frontend ESLint, Svelte type checks, and backend pylint.
-- `npm run format` and `npm run format:backend`: format JS/TS/Svelte/CSS/MD and Python.
-- `npm run test:frontend`: runs Vitest unit tests.
-- `npm run cy:open`: opens Cypress test runner.
-- `cd backend && ./dev.sh`: runs backend locally with auto-reload.
-- `make install|start|stop`: manage Docker Compose-based local stack.
+- `npm run dev`: start the frontend dev server.
+- `cd backend && ./dev.sh`: run the FastAPI backend with reload.
+- `npm run build`: create the production frontend build.
+- `npm run lint`: run ESLint, Svelte checks, and backend linting.
+- `npm run test:frontend`: run Vitest unit tests.
+- `make install`, `make start`, `make stop`: manage the local Docker Compose stack.
+- `make update` or `./scripts/ops/update-openwebui.sh`: redeploy the local stack from the current checkout.
+- `./update.sh`: sync `main` with upstream, rebase `my-local-tweaks`, then redeploy.
 
 ## Coding Style & Naming Conventions
-- Prettier config uses tabs, single quotes, no trailing commas, 100-char line width.
-- ESLint covers TypeScript, Svelte, and Cypress conventions.
-- Python code should pass `black` and `pylint`.
-- Prefer descriptive file names and keep route organization aligned with SvelteKit conventions (for example, `src/routes/(app)/workspace/...`).
+Prettier enforces tabs, single quotes, no trailing commas, and a 100-character line width. Follow existing SvelteKit route naming under `src/routes/`, and use descriptive file names such as `workspace-settings.svelte` or `chat-service.ts`. Python changes should remain `black`-compatible and pass `pylint`.
 
 ## Testing Guidelines
-- Frontend unit tests: Vitest (`npm run test:frontend`).
-- E2E tests: Cypress specs in `cypress/e2e/*.cy.ts`.
-- Backend tests live under `backend/open_webui/test/`; run `pytest` when changing backend behavior.
-- Add or update tests for behavior changes; include manual verification steps for UI-sensitive fixes.
+Use Vitest for frontend logic, Cypress for browser flows, and `pytest` for backend behavior. Name Cypress specs under `cypress/e2e/*.cy.ts`. Add or update tests when behavior changes, and include manual verification steps for UI-sensitive fixes such as chat history, login, or image generation.
 
 ## Commit & Pull Request Guidelines
-- Follow concise, scoped commit messages (history commonly uses prefixes like `refac`, `chore: format`).
-- Open PRs against `dev` (not `main`).
-- Use a PR title prefix from template taxonomy (`fix`, `feat`, `refactor`, `docs`, etc.).
-- Complete the PR checklist: clear description, changelog entry, docs updates, test evidence, and screenshots/videos for UI changes.
-- Keep PRs atomic and rebase/clean up commits before review.
+Keep commits concise and scoped; recent history uses prefixes like `fix:`, `docs:`, `feat:`, and `chore:`. Open PRs against `dev`, not `main`. PRs should include a clear summary, linked issue when applicable, test evidence, and screenshots or video for UI changes. Keep `main` as an upstream mirror and do personal work on `my-local-tweaks`.
+
+## Configuration & Operations Tips
+Keep secrets in `.env`, especially a stable `WEBUI_SECRET_KEY`. Before major updates, use the backup and restore scripts in `scripts/ops/`. Refer to `docs/local/openwebui-update-runbook.md` and `docs/local/openwebui-fork-sync-workflow.md` for the fork-specific maintenance workflow.
