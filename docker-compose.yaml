@@ -2,7 +2,7 @@ services:
   ollama:
     volumes:
       - ${OLLAMA_DATA_DIR-./.localdata/ollama}:/root/.ollama
-    container_name: ollama
+    container_name: ${OLLAMA_CONTAINER_NAME-ollama}
     pull_policy: always
     tty: true
     restart: unless-stopped
@@ -10,7 +10,7 @@ services:
 
   comfyui:
     image: yanwk/comfyui-boot:cpu
-    container_name: comfyui
+    container_name: ${COMFYUI_CONTAINER_NAME-comfyui}
     ports:
       - ${COMFYUI_PORT-8188}:8188
     volumes:
@@ -25,7 +25,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
-    container_name: open-webui
+    container_name: ${OPEN_WEBUI_CONTAINER_NAME-open-webui}
     volumes:
       - ${OPEN_WEBUI_DATA_DIR-./.localdata/open-webui}:/app/backend/data
       - ./custom-favicon/favicon.png:/app/backend/open_webui/static/favicon.png:ro
